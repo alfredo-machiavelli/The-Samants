@@ -74,41 +74,38 @@ def decrypt(encrypted_string, N, D):
 
     return result
 
-def login():
-    username = input("Enter your username: ")
+def login(name,pword,Error,ErrorMsg):
+    username = name
     while users.find_one({"Username": username}) is None:
-        username = input("Username not found. Please try again: ")
+        Error = True
+        ErrorMsg  = "Username not found. Please try again: "
+        return
     thisUser =  users.find_one({"Username": username})
     correctPass = decrypt(str(thisUser["Password"]), 4, -1)
-    password = input("Enter your password: ")
+    password = pword
     while password !=  correctPass:
-        password = input("Incorrect password. Please try again: ")
+        Error = True
+        ErrorMsg = "Incorrect password. Please try again: "
+        return
     print("Login successful! Welcome " + thisUser["First Name"] + "!")
     return
 
-def signup():
-    firstName = input("What's your first name? ")
-    while not firstName.isalnum():
-        firstName= input("Make sure your first name doesn't have any numbers!\n What's your first name? ")
+def signup(username,password,Error,ErrorMsg): 
+    firstName = "John"
+   # while not firstName.isalnum():
+       # firstName= input("Make sure your first name doesn't have any numbers!\n What's your first name? ")
 
-    lasttName = input("What's your last name? ")
-    while not lasttName.isalnum():
-        lasttName = input("Make sure your last name doesn't have any numbers!\n What's your lastname? ")
+    lasttName = "Doe"
+   # while not lasttName.isalnum():
+       # lasttName = input("Make sure your last name doesn't have any numbers!\n What's your lastname? ")
 
-    username = input("Please select a username: @")
-    while not username.isalnum():
-        username = input("Make sure your username only contains numbers and letters!\n"
-                         "Please select a username: @")
+    
+    while not username.isalnum() and  password.isalnum() :
+        Error = True
+        ErrorMsg =  "Make sure your username and/or password only contains numbers and letters!\n"
+        return
+                        
 
-    # password = getpass("Please select a password: ")
-    password = input("Please select a password: ")
-    while not password.isalnum() :
-        # password = getpass("Make sure your password is at least 5 characters long "
-        #                  "and only contains numbers and letters!\n"
-        #                    "Please select a password: ")
-        password = input("Make sure your password is at least 5 characters long "
-                           "and only contains numbers and letters!\n"
-                           "Please select a password: ")
 
     newUser = {"Username": username,
             "First Name": firstName,
@@ -119,18 +116,19 @@ def signup():
     resource_id = users.insert_one(newUser).inserted_id
     print("Signup successful! Welcome " + firstName + "!")
     return
-def main():
-    print("Welcome to h/w library!")
-    try:
-        which =input("Would you login, signup, or exit the application?")
-        if which == "login":
-            login()
-        elif which == "signup":
-            signup()
-        elif which == "exit":
-            sys.exit()
-    except KeyboardInterrupt: print("\nGood Bye!")
+
+#def main():
+    #print("Welcome to h/w library!")
+   # try:
+        #which =input("Would you login, signup, or exit the application?")
+        #if which == "login":
+            #login()
+        #elif which == "signup":
+           # signup()
+       # elif which == "exit":
+           # sys.exit()
+    #except KeyboardInterrupt: print("\nGood Bye!")
 
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+    ##main()
